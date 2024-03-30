@@ -30,7 +30,7 @@ predictor = dlib.shape_predictor('shape_predictor_68_face_landmarks.dat')
 closed_threshold = 3  # 눈 감고 있는 시간 임계값 (초)
 face_not_detected_threshold = 2  # 얼굴 감지되지 않는 시간 임계값 (초)
 vid_in = cv2.VideoCapture(1)  # 외부 웹캠 사용
-threshold = 0.3  # 임계값 조정- 값이 커질수록 더 잘 감지됨.
+threshold = 0.25  # 임계값 조정- 값이 커질수록 더 잘 감지됨.
 
 def eye_aspect_ratio(eye):
     # Convert eye landmarks list to numpy array
