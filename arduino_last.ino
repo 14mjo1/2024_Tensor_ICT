@@ -4,12 +4,14 @@ int ledPin = 13;
 int buzzerPin = 6;
 int reset;
 int flag;
+int ledRed = 12;
 
 void setup() {
   Serial.begin(9600); // 시리얼 통신을 9600 bps로 초기화합니다.
   pinMode(switchPin, INPUT);
   pinMode(ledPin, OUTPUT);
   pinMode(buzzerPin, OUTPUT);
+  pinMode(ledRed, OUTPUT);
 }
 
 void loop() {
@@ -26,11 +28,13 @@ void loop() {
     }
   }
   if(on == 1){
-    digitalWrite(ledPin,HIGH);
+    
     if (Serial.available() > 0) { // 시리얼 버퍼에 데이터가 있는지 확인합니다.
     int receivedValue = Serial.parseInt(); // 시리얼에서 정수 값을 읽어옵니다.
+    
     if(receivedValue == 1){
       flag = 1;
+      
     }
     else if(receivedValue == 2){
       flag =2;
@@ -42,15 +46,20 @@ void loop() {
     }
     if(flag == 1 || flag == 2){ // flag가 1 또는 2일 때 부저를 울립니다.
       turnOnBuzzer();
+      digitalWrite(ledRed,HIGH);
+      digitalWrite(ledPin,LOW);
     }
     else if(flag == 0){ // flag가 0일 때 부저를 멈춥니다.
       turnOffBuzzer();
+      digitalWrite(ledRed,LOW);
+      digitalWrite(ledPin,HIGH);
     }
   }
   
   else{
       turnOffBuzzer();
       digitalWrite(ledPin, LOW);
+      digitalWrite(ledRed,LOW);
   }
 }
 
@@ -71,4 +80,5 @@ void turnOffBuzzer() {
   // 부저를 멈추는 코드
   digitalWrite(buzzerPin,LOW);
   digitalWrite(ledPin,LOW);
+  
 }
