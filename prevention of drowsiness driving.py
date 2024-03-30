@@ -5,7 +5,7 @@ import time
 import serial
 
 #아두이노 통신
-ser = serial.Serial('COM6', 9600, timeout=1)
+ser = serial.Serial('COM5', 9600, timeout=1)
 #아두이노 통신 함수, 정수값을 보냄.
 def send_integer(value):
     ser.write(str(value).encode()) # 정수 값을 문자열로 변환
