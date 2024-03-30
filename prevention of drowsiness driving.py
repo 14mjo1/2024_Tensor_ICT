@@ -5,7 +5,7 @@ import time
 import serial
 
 #아두이노 통신
-ser = serial.Serial('COM5', 9600, timeout=1)
+ser = serial.Serial('COM6', 9600, timeout=1)
 #아두이노 통신 함수, 정수값을 보냄.
 def send_integer(value):
     ser.write(str(value).encode()) # 정수 값을 문자열로 변환
@@ -29,7 +29,7 @@ predictor = dlib.shape_predictor('shape_predictor_68_face_landmarks.dat')
 # Variables for tracking eye closure
 closed_threshold = 3  # 눈 감고 있는 시간 임계값 (초)
 face_not_detected_threshold = 2  # 얼굴 감지되지 않는 시간 임계값 (초)
-vid_in = cv2.VideoCapture(0)  # 외부 웹캠 사용
+vid_in = cv2.VideoCapture(1)  # 외부 웹캠 사용
 threshold = 0.3  # 임계값 조정- 값이 커질수록 더 잘 감지됨.
 
 # Variables for tracking closed time
@@ -52,6 +52,7 @@ def eye_aspect_ratio(eye):
     #눈이 감겼는지 계산한 값
     ear = (A + B) / (2.0 * C)
     return ear
+
 #눈 감겼는지 판단
 def eyes_closed(landmarks):
     left_eye_pts = [landmarks[i] for i in LEFT_EYE]#왼쪽 눈 랜드마크 추출
@@ -94,6 +95,15 @@ while True:
         print("Face not detected for more than {} seconds".format(face_not_detected_threshold))
         face_not_detected_flag = False
 
+        # 얼굴 감지될 때까지 기다림
+        while True:
+            ret, image_o = vid_in.read()
+            img_gray = cv2.cvtColor(image_o, cv2.COLOR_BGR2GRAY)
+            face_detector = detector(img_gray, 1)
+            if len(face_detector) > 0:
+                face_not_detected_flag = False
+                break
+            
     for face in face_detector:
         cv2.rectangle(image, (face.left(), face.top()), (face.right(), face.bottom()), (0, 0, 255), 3)
 
