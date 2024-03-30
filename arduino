@@ -1,0 +1,15 @@
+import serial.tools.list_ports
+
+def find_arduino_ports():
+    arduino_ports = []
+    ports = serial.tools.list_ports.comports()
+    for port, desc, hwid in sorted(ports):
+        if 'arduino' in desc.lower() or 'usb serial device' in desc.lower():
+            arduino_ports.append(port)
+    return arduino_ports
+
+arduino_ports = find_arduino_ports()
+if arduino_ports:
+    print("Arduino ports found:", arduino_ports)
+else:
+    print("No Arduino ports found")
