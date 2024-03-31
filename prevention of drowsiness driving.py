@@ -5,7 +5,8 @@ import time
 import serial
 
 #아두이노 통신
-ser = serial.Serial('COM5', 9600, timeout=1)
+ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
+#라즈베리파이에서 명령어 sudo chmod 777 /dev/ttyACM0 로 권한 주기.
 #아두이노 통신 함수, 정수값을 보냄.
 def send_integer(value):
     ser.write(str(value).encode()) # 정수 값을 문자열로 변환
@@ -29,7 +30,7 @@ predictor = dlib.shape_predictor('shape_predictor_68_face_landmarks.dat')
 # Variables for tracking eye closure
 closed_threshold = 3  # 눈 감고 있는 시간 임계값 (초)
 face_not_detected_threshold = 2  # 얼굴 감지되지 않는 시간 임계값 (초)
-vid_in = cv2.VideoCapture(1)  # 외부 웹캠 사용
+vid_in = cv2.VideoCapture(0)  # 외부 웹캠 사용
 threshold = 0.3  # 임계값 조정- 값이 커질수록 더 잘 감지됨.
 
 # Variables for tracking closed time
